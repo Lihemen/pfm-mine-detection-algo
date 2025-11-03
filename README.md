@@ -56,6 +56,70 @@ Windows Powershell
   pip install -r requirements.txt
 ```
 
+5. Working with Git
+
+- Create a branch
+
+To prevent working directly on the main branch, you can create a copy based off the latest changes in the main branch
+
+```bash
+  git checkout -b <branch-name> <e.g git checkout -b sara_branch>
+```
+
+Once this branch has been merged into main, it can be deleted safely, all changes would be preserved in main.
+
+- Commit your changes
+
+This add all the files (both new and modified) to the current working directory
+
+```bash
+  git add .
+```
+
+This saves the current working directory ready to be sent.
+
+```bash
+  git commit -am "Commit message" <e.g git commit -am "Updated plotting">
+```
+
+- Save your changes
+
+This sends the changes to github for everyone to see
+
+```bash
+  git push -u origin <branch_name> <e.g git push -u origin sara_branch>
+```
+
+- Get the latest changes
+
+This moves the cursor back to the main branch
+
+```bash
+  git checkout main
+```
+
+This fetches and merges the latest changes
+
+```bash
+  git pull
+```
+
+- Once you're back on the main branch you can delete your old branch and create a new branch
+
+This deletes the branch
+
+```bash
+  git branch -D <old_branch_name>
+```
+
+This creates a new branch
+
+```bash
+  git checkout -b <new_branch_name>
+```
+
+The names can be the same, provided this command is executed when you're on the main branch.
+
 5. Train the Model (optional)
 
 6. Run the Model
