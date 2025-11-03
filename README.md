@@ -37,13 +37,17 @@ Mac or Linux
 Windows Bash
 
 ```bash
-  python -m venv venv
+  source venv/Scripts/activate
 ```
 
 Windows Powershell
 
 ```bash
-  python -m venv venv
+  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+```
+
+```bash
+  .\venv\Scripts\activate.ps1
 ```
 
 4. Install Dependencies
