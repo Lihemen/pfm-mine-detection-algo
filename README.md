@@ -56,6 +56,22 @@ Windows Powershell
   pip install -r requirements.txt
 ```
 
+5. Running the project
+
+Open your terminal and write the command
+
+```bash
+  python3 main.py
+```
+
+or
+
+```bash
+  python main.py
+```
+
+If in VSCode, you can click the Play button that appears on the right when in a python file. Choose the environment of the created venv and run.
+
 5. Working with Git
 
 - Create a branch
