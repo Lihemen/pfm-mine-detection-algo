@@ -1,6 +1,0 @@
-path: ./data
-train: train/images
-val: validation/images
-nc: 8
-names:
-  - PFM-1

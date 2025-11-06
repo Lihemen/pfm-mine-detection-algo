@@ -1,0 +1,7 @@
+names:
+- PFM-1
+nc: 1
+path: /Users/MAC/Documents/dev/data-science/computer-vision/pfm-mine-detection-algo/data
+test: images/test
+train: images/train
+val: images/validation
