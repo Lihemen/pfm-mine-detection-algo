@@ -100,7 +100,7 @@ class PFM1DetectionSystem:
         project='training',
         name='exp',
         plots=True,
-        device=0,  # Use GPU if available, else CPU
+        device='cpu',  # Use GPU if available, else CPU
         # Augmentation parameters for better generalization
         hsv_h=0.015,  # HSV-Hue augmentation
         hsv_s=0.7,    # HSV-Saturation augmentation
@@ -116,10 +116,11 @@ class PFM1DetectionSystem:
     print("✅ Training complete!")
     return results
   
-  def load_model(self, model_path):
+  def load_model(self, model_path = None):
     """Load a trained model"""
     print(f"\n📥 Loading model from {model_path}...")
-    self.model = YOLO(model_path)
+    self.model_path = model_path if model_path is not None else f"{self.model_size}.pt"
+    self.model = YOLO(self.model_path)
     print("✅ Model loaded successfully!")
     
   def validate_model(self):
@@ -211,7 +212,7 @@ class PFM1DetectionSystem:
     return results_list
 
 
-  def fine_tune_model(self, pretrained_path, epochs=50, lr=0.001):
+  def fine_tune_model(self, pretrained_path = None, epochs=50, lr=0.001):
     """
     Fine-tune an existing model with lower learning rate
     
@@ -222,7 +223,8 @@ class PFM1DetectionSystem:
     """
     print(f"\n🔧 Fine-tuning model from {pretrained_path}...")
     
-    self.model = YOLO(pretrained_path)
+    self.pretrained_path = pretrained_path if pretrained_path is not None else f"{self.model_size}.pt"
+    self.model = YOLO(self.pretrained_path)
     
     results = self.model.train(
       data=str(self.data_path / 'data.yaml'),
@@ -235,14 +237,14 @@ class PFM1DetectionSystem:
       project='pfm1_finetuning',
       name='exp',
       plots=True,
-      device=0,
+      device='cpu',
       resume=False,
     )
     
     print("✅ Fine-tuning complete!")
     return results
   
-  def plot_training_results(self, training_dir='training/exp'):
+  def plot_training_results(self, training_dir='pfm1_finetuning/exp'):
     """Plot training metrics"""
     print("\n📊 Plotting training results...")
     
@@ -320,6 +322,8 @@ class PFM1DetectionSystem:
       print(f"✅ Confusion matrix displayed from {cm_path}")
     else:
       print(f"❌ Confusion matrix not found at {cm_path}")
+    
+    return None
 
   def analyze_detection_results(self, results_list):
     """Analyze detection results and create visualizations"""
@@ -362,22 +366,27 @@ class PFM1DetectionSystem:
     
     # Plot 3: Summary statistics
     axes[2].axis('off')
+    mean_conf = np.mean(all_confidences) if all_confidences else 0.0
+    median_conf = np.median(all_confidences) if all_confidences else 0.0
+    min_conf = np.min(all_confidences) if all_confidences else 0.0
+    max_conf = np.max(all_confidences) if all_confidences else 0.0
+
     summary_text = f"""
-    Detection Summary
-    ═══════════════════
-    
-    Total Images: {total_images}
-    Images with Detections: {images_with_detections}
-    Detection Rate: {images_with_detections/total_images*100:.1f}%
-    
-    Total Detections: {total_detections}
-    Avg Detections/Image: {avg_detections:.2f}
-    
-    Confidence Stats:
-    Mean: {np.mean(all_confidences):.3f if all_confidences else 0}
-    Median: {np.median(all_confidences):.3f if all_confidences else 0}
-    Min: {np.min(all_confidences):.3f if all_confidences else 0}
-    Max: {np.max(all_confidences):.3f if all_confidences else 0}
+      Detection Summary
+      ═══════════════════
+      
+      Total Images: {total_images}
+      Images with Detections: {images_with_detections}
+      Detection Rate: {images_with_detections/total_images*100:.1f}%
+      
+      Total Detections: {total_detections}
+      Avg Detections/Image: {avg_detections:.2f}
+      
+      Confidence Stats:
+      Mean: {mean_conf}
+      Median: {median_conf}
+      Min: {min_conf}
+      Max: {max_conf}
     """
     axes[2].text(0.1, 0.5, summary_text, fontsize=11, family='monospace', verticalalignment='center')
     

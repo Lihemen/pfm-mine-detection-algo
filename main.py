@@ -12,8 +12,8 @@ def main():
   print("\n" + "=" * 30)
   print("STEP 1: DATASET SETUP")
   print("=" * 30)
-  system.setup_dataset_structure()
-  system.create_data_yaml()
+  # system.setup_dataset_structure()
+  # system.create_data_yaml()
 
 
   # Step 2: Train model (uncomment when dataset is ready, comment out when training is done)
@@ -26,13 +26,13 @@ def main():
   print("\n" + "=" * 30)
   print("STEP 3: FINE-TUNING (OPTIONAL)")
   print("=" * 30)
-  # system.fine_tune_model('training/exp/weights/best.pt', epochs=50)
+  # system.fine_tune_model(epochs=50)
 
   # Step 4: Load trained model
   print("\n" + "=" * 30)
   print("STEP 4: LOAD MODEL")
   print("=" * 30)
-  # system.load_model('training/exp/weights/best.pt')
+  system.load_model(model_path='pfm1_finetuning/exp2/weights/best.pt')
   
   # Step 5: Validate and calculate accuracy (depends on loaded trained model)
   print("\n" + "=" * 30)
@@ -44,15 +44,15 @@ def main():
   print("\n" + "=" * 30)
   print("STEP 6: TEST ON IMAGES")
   print("=" * 30)
-  # test_results = system.test_on_images('data/images/test')
+  test_results = system.test_on_images('data/images/test')
   
   # Step 7: Plot results  (depends on loaded trained model)
   print("\n" + "=" * 30)
   print("STEP 7: VISUALIZE RESULTS")
   print("=" * 30)
-  # system.plot_training_results()
-  # system.create_confusion_matrix()
-  # analysis = system.analyze_detection_results(test_results)
+  system.plot_training_results()
+  system.create_confusion_matrix()
+  analysis = system.analyze_detection_results(test_results)
 
 if __name__ == "__main__":
   main()
